@@ -4,6 +4,40 @@ function computerPlay() {
     return rpsChoices[Math.floor(Math.random() * rpsChoices.length)]
 }
 
+//Function to start the game
+function startDaGame() {
+    for (i=1; i<2; i++) { //Loop depends on answer
+        let gameStart = prompt('Would you like to start the game?');
+        if (gameStart.toLowerCase() === 'yes') { //Ends the loop, starts the game
+            alert('Cool, let\'s start the game! Good luck!');
+            game();
+        } else if (gameStart.toLowerCase() === 'no') { //Resets the loop to ask again.
+            alert('Oh... there isn\'t much else to do here..');
+            i--;
+        } else { //Catches unexpected answers and resets thee loop.
+            alert('Please only select "yes" or "no"...');
+            i--;
+        }
+    }
+}
+
+//Replay Function (edited startDaGame prettymuch..) Called at the end of each game function.
+function replayDaGame() {
+    for (i=1; i<2; i++) {
+        let gameStart = prompt('Would you like to play another game?');
+        if (gameStart.toLowerCase() == 'yes') {
+            alert('Cool, let\'s start the game! Good Luck!);
+            game();
+        } else if (gameStart.toLowerCase() == 'no') {
+            alert('Oh... Welp there isn\'t much else to do here..');
+            i--;
+        } else {
+            alert('Please only select "yes" or "no"...');
+            i--;
+        }
+    }
+}
+
 //Single round of RPS
 //This could definitely use some optimization, but I'll add it in later.
 function playRound(playerSelection, computerSelection) {
@@ -73,16 +107,16 @@ function game() {
                 case 'win':
                     playerWin++;
                     roundCount++;
-                    alert(`You win, ${playerSelection} beats ${computerSelection}!`);
+                    alert(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
                     break;
                 case 'lose':
                     computerWin++;
                     roundCount++;
-                    alert(`You lose, ${computerSelection} beats ${playerSelection}!`);
+                    alert(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);
                     break;
                 case 'draw':
                     roundCount++;
-                    alert(`It's a draw, you both picked ${playerSelection}!`);
+                    alert(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
                     break;
                 default:
                     alert('You gotta pick rock, paper, or scissors...');
@@ -113,39 +147,6 @@ function game() {
 alert('Welcome to my RPS game! Hit OK to continue :D');
 
 
-//Function to start the game
-function startDaGame() {
-    for (i=1; i<2; i++) { //Loop depends on answer
-        let gameStart = prompt('Would you like to start the game?');
-        if (gameStart.toLowerCase() === 'yes') { //Ends the loop, starts the game
-            alert('Cool, let\'s start the game! Good luck!');
-            game();
-        } else if (gameStart.toLowerCase() === 'no') { //Resets the loop to ask again.
-            alert('Oh... there isn\'t much else to do here..');
-            i--;
-        } else { //Catches unexpected answers and resets thee loop.
-            alert('Please only select "yes" or "no"...');
-            i--;
-        }
-    }
-}
-
 //Starts the game, only called once.
 startDaGame();
 
-//Replay Function (edited startDaGame prettymuch..) Called at the end of each game function.
-function replayDaGame() {
-    for (i=1; i<2; i++) {
-        let gameStart = prompt('Would you like to play another game?');
-        if (gameStart.toLowerCase() == 'yes') {
-            alert('Cool, let\'s start the game! Don\'t forget to look at the console in between prompts!');
-            game();
-        } else if (gameStart.toLowerCase() == 'no') {
-            alert('Oh... Welp there isn\'t much else to do here..');
-            i--;
-        } else {
-            alert('Please only select "yes" or "no"...');
-            i--;
-        }
-    }
-}
