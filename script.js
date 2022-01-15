@@ -123,7 +123,7 @@ function playRound(playerSelection, computerSelection) {
             break;
         default:
             alert('You gotta pick rock, paper, or scissors...');
-            return playRound(prompt('Please pick rock, paper, or scissors.'), computerPlay());
+            return playRound(prompt(`Round ${roundCount.toString()}: Please pick rock, paper, or scissors.`), computerPlay());
     }
 }
 
