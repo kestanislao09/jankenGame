@@ -10,13 +10,13 @@ function playRound(playerSelection, computerSelection) {
     if (playerSelection === 'rock') {
         switch (computerSelection) {
             case 'rock':
-                return 'It\'s a draw! You both picked Rock.';
+                return 'draw';
                 break;
             case 'paper':
-                return 'You lose! Paper beats Rock.';
+                return 'lose';
                 break;
             case 'scissors':
-                return 'You Win! Rock beats Scissors.';
+                return 'win';
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -25,13 +25,13 @@ function playRound(playerSelection, computerSelection) {
     } else if (playerSelection === 'paper') {
         switch (computerSelection) {
             case 'rock':
-                return 'You Win! Paper beats Rock.';
+                return 'win';
                 break;
             case 'paper':
-                return 'It\'s a draw! You both picked Paper.';
+                return 'draw';
                 break;
             case 'scissors':
-                return 'You Lose! Scissors beats paper.';
+                return 'lose';
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -40,13 +40,13 @@ function playRound(playerSelection, computerSelection) {
     } else if (playerSelection === 'scissors') {
         switch (computerSelection) {
             case 'rock':
-                return 'You Lose! Rock beats Scissors.';
+                return 'lose';
                 break;
             case 'paper':
-                return 'You Win! Scissors beats Paper.';
+                return 'win';
                 break;
             case 'scissors':
-                return 'It\'s a draw! You both picked Scissors.';
+                return 'draw';
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -57,3 +57,95 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
+//5 round game of RPS. Maybe future update to adjust game rounds.
+function game() {
+    let playerWin = 0 //Variables to keep score for each player
+    let computerWin = 0
+    let roundCount = 1
+    for (i=1;i<=5;i++) { //Loops through rounds until 5 have been played.
+        let computerSelection = computerPlay()
+        
+        for (let b = 1; b < 2; b++) { //This loop catches unexpected answers to the prompt without advancing the round.
+            let playerSelection = prompt(`Round ${roundCount.toString()}:
+                    Please select rock, paper, or scissors`); //Line break for readability ^^^
+            let result = playRound(playerSelection.toLowerCase(), computerSelection.toLowerCase());
+            switch(result) { //Switch to simultaneously update score and print a dialogue
+                case 'win':
+                    playerWin++;
+                    roundCount++;
+                    alert(`You win, ${playerSelection} beats ${computerSelection}!`);
+                    break;
+                case 'lose':
+                    computerWin++;
+                    roundCount++;
+                    alert(`You lose, ${computerSelection} beats ${playerSelection}!`);
+                    break;
+                case 'draw':
+                    roundCount++;
+                    alert(`It's a draw, you both picked ${playerSelection}!`);
+                    break;
+                default:
+                    alert('You gotta pick rock, paper, or scissors...');
+                    b--; //Keeps the loop going until the user picks a proper answer.
+            }
+        }
+        //Prints the updated score after the result is calculated
+        alert(`The score is now: ${playerWin.toString()} to ${computerWin.toString()}!`);
+    }
+    //End of the game, prints a win/lose/draw dialogue + the final scores.
+    if (playerWin > computerWin) {
+        alert('Congratulations on winning! You are an RPS master!');
+        alert(`Final Score: Player:${playerWin.toString()} RPSBot:${computerWin.toString()}`);
+        replayDaGame();
+    } else if (playerWin < computerWin) {
+        alert('You\'ve lost! Better luck next time!');
+        alert(`Final Score: Player:${playerWin.toString()} RPSBot:${computerWin.toString()}`);
+        replayDaGame();
+    } else if (playerWin === computerWin) {
+        alert('What a close game! It\'s a draw!');
+        alert(`Final Score: Player:${playerWin.toString()()} RPSBot:${computerWin.toString()}`);
+        replayDaGame();
+    } else {
+        alert('Ah crap, Something went wrong!'); //another just in case
+    }
+}
+//Instructions will be obsolete once I put in a GUI
+alert('Welcome to my RPS game! Hit OK to continue :D');
+
+
+//Function to start the game
+function startDaGame() {
+    for (i=1; i<2; i++) { //Loop depends on answer
+        let gameStart = prompt('Would you like to start the game?');
+        if (gameStart.toLowerCase() === 'yes') { //Ends the loop, starts the game
+            alert('Cool, let\'s start the game! Good luck!');
+            game();
+        } else if (gameStart.toLowerCase() === 'no') { //Resets the loop to ask again.
+            alert('Oh... there isn\'t much else to do here..');
+            i--;
+        } else { //Catches unexpected answers and resets thee loop.
+            alert('Please only select "yes" or "no"...');
+            i--;
+        }
+    }
+}
+
+//Starts the game, only called once.
+startDaGame();
+
+//Replay Function (edited startDaGame prettymuch..) Called at the end of each game function.
+function replayDaGame() {
+    for (i=1; i<2; i++) {
+        let gameStart = prompt('Would you like to play another game?');
+        if (gameStart.toLowerCase() == 'yes') {
+            alert('Cool, let\'s start the game! Don\'t forget to look at the console in between prompts!');
+            game();
+        } else if (gameStart.toLowerCase() == 'no') {
+            alert('Oh... Welp there isn\'t much else to do here..');
+            i--;
+        } else {
+            alert('Please only select "yes" or "no"...');
+            i--;
+        }
+    }
+}
