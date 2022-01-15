@@ -1,3 +1,15 @@
+//Variables to keep score for each player
+let playerWin = 0;
+let computerWin = 0;
+let roundCount = 1;
+
+//Resets the score and round count
+function reset() {
+    playerWin = 0;
+    computerWin = 0;
+    roundCount = 1;
+}
+
 //function for the computer player's choices
 function computerPlay() {
     const rpsChoices = ['rock', 'paper', 'scissors']
@@ -6,41 +18,39 @@ function computerPlay() {
 
 //Function to start the game
 function startDaGame() {
-    for (i=1; i<2; i++) { //Loop depends on answer
-        let gameStart = prompt('Would you like to start the game?');
-        if (gameStart.toLowerCase() === 'yes') { //Ends the loop, starts the game
-            alert('Cool, let\'s start the game! Good luck!');
-            game();
-        } else if (gameStart.toLowerCase() === 'no') { //Resets the loop to ask again.
-            alert('Oh... there isn\'t much else to do here..');
-            i--;
-        } else { //Catches unexpected answers and resets thee loop.
-            alert('Please only select "yes" or "no"...');
-            i--;
-        }
+    let gameStart = prompt('Would you like to start the game?');
+    if (gameStart.toLowerCase() === 'yes') {
+        alert('Cool, let\'s start the game! Good luck!');
+        reset();
+        game();
+    } else if (gameStart.toLowerCase() === 'no') {
+        alert('Oh... there isn\'t much else to do here..');
+        return startDaGame();
+    } else {
+        alert('Please only select "yes" or "no"...');
+        return startDaGame();
     }
 }
 
 //Replay Function (edited startDaGame prettymuch..) Called at the end of each game function.
 function replayDaGame() {
-    for (i=1; i<2; i++) {
-        let gameStart = prompt('Would you like to play another game?');
-        if (gameStart.toLowerCase() == 'yes') {
-            alert('Cool, let\'s start the game! Good Luck!');
-            game();
-        } else if (gameStart.toLowerCase() == 'no') {
-            alert('Oh... Welp there isn\'t much else to do here..');
-            i--;
-        } else {
-            alert('Please only select "yes" or "no"...');
-            i--;
-        }
+    let gameStart = prompt('Would you like to play another game?');
+    if (gameStart.toLowerCase() == 'yes') {
+        alert('Cool, let\'s start the game! Good Luck!');
+        reset();
+        game();
+    } else if (gameStart.toLowerCase() == 'no') {
+        alert('Oh... Welp there isn\'t much else to do here..');
+        return replayDaGame();
+    } else {
+        alert('Please only select "yes" or "no"...');
+        return replayDaGame();
     }
 }
 
 //Single round of RPS
 //This could definitely use some optimization, but I'll add it in later.
-function playRound(playerSelection, computerSelection) {
+function rpsResult(playerSelection, computerSelection) {
     if (playerSelection === 'rock') {
         switch (computerSelection) {
             case 'rock':
@@ -88,44 +98,46 @@ function playRound(playerSelection, computerSelection) {
         }
     } else {
         return 'You must choose rock, paper, or scissors. Try again :c'
+        
+    }
+}
+
+function playRound(playerSelection, computerSelection) {
+    let playerThrow = playerSelection
+    let computerThrow = computerSelection
+    let result = rpsResult(playerThrow.toLowerCase(), computerThrow.toLowerCase());
+    switch(result) { //Switch to simultaneously update score and print a dialogue
+        case 'win':
+            playerWin++;
+            roundCount++;
+            alert(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
+            break;
+        case 'lose':
+            computerWin++;
+            roundCount++;
+            alert(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);
+            break;
+        case 'draw':
+            roundCount++;
+            alert(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
+            break;
+        default:
+            alert('You gotta pick rock, paper, or scissors...');
+            return playRound(prompt('Please pick rock, paper, or scissors.'), computerPlay());
     }
 }
 
 //5 round game of RPS. Maybe future update to adjust game rounds.
 function game() {
-    let playerWin = 0 //Variables to keep score for each player
-    let computerWin = 0
-    let roundCount = 1
+    
     for (i=1;i<=5;i++) { //Loops through rounds until 5 have been played.
-        let computerSelection = computerPlay()
+        playRound(prompt(`Round ${roundCount.toString()}: Please pick rock, paper, or scissors.`), computerPlay());
         
-        for (let b = 1; b < 2; b++) { //This loop catches unexpected answers to the prompt without advancing the round.
-            let playerSelection = prompt(`Round ${roundCount.toString()}:
-                    Please select rock, paper, or scissors`); //Line break for readability ^^^
-            let result = playRound(playerSelection.toLowerCase(), computerSelection.toLowerCase());
-            switch(result) { //Switch to simultaneously update score and print a dialogue
-                case 'win':
-                    playerWin++;
-                    roundCount++;
-                    alert(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
-                    break;
-                case 'lose':
-                    computerWin++;
-                    roundCount++;
-                    alert(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);
-                    break;
-                case 'draw':
-                    roundCount++;
-                    alert(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
-                    break;
-                default:
-                    alert('You gotta pick rock, paper, or scissors...');
-                    b--; //Keeps the loop going until the user picks a proper answer.
-            }
-        }
         //Prints the updated score after the result is calculated
         alert(`The score is now: ${playerWin.toString()} to ${computerWin.toString()}!`);
     }
+        
+        
     //End of the game, prints a win/lose/draw dialogue + the final scores.
     if (playerWin > computerWin) {
         alert('Congratulations on winning! You are an RPS master!');
