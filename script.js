@@ -137,7 +137,7 @@ function game() {
         replayDaGame();
     } else if (playerWin === computerWin) {
         alert('What a close game! It\'s a draw!');
-        alert(`Final Score: Player:${playerWin.toString()()} RPSBot:${computerWin.toString()}`);
+        alert(`Final Score: Player:${playerWin.toString()} RPSBot:${computerWin.toString()}`);
         replayDaGame();
     } else {
         alert('Ah crap, Something went wrong!'); //another just in case
