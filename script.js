@@ -26,7 +26,7 @@ function replayDaGame() {
     for (i=1; i<2; i++) {
         let gameStart = prompt('Would you like to play another game?');
         if (gameStart.toLowerCase() == 'yes') {
-            alert('Cool, let\'s start the game! Good Luck!);
+            alert('Cool, let\'s start the game! Good Luck!');
             game();
         } else if (gameStart.toLowerCase() == 'no') {
             alert('Oh... Welp there isn\'t much else to do here..');
