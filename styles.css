@@ -2,6 +2,11 @@
     background-color: #4a4a4a;
 }
 
+h1 {
+    justify-content: center;
+    text-align: center;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -24,7 +29,27 @@ button {
     justify-content: center;
 }
 
+#playerScore,
+#computerScore {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 16px;
+}
+
 .buttons {
     display: flex;
     gap: 16px;
+}
+
+.poof {
+    display: none;
+}
+
+.replayBtn {
+    border: solid;
+    border-color: black;
+    height: 120px;
+    width: 240px;
+    font-size: 24px;
+    font-weight: bolder;
 }

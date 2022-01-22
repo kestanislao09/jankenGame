@@ -8,6 +8,9 @@ function reset() {
     playerWin = 0;
     computerWin = 0;
     roundCount = 1;
+    head.textContent = 'Let\'s play Rock, Paper, Scissors!';
+    pScore.textContent = 'Player: 0';
+    cScore.textContent = 'Computer: 0';
 }
 
 //function for the computer player's choices
@@ -23,17 +26,17 @@ function playRound(playerSelection, computerSelection) {
         switch (computerSelection) {
             case 'rock':
                 roundCount++;
-                console.log(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
+                head.textContent = `It's a draw, you both picked ${playerSelection.toLowerCase()}!`;
                 break;
             case 'paper':
                 computerWin++;
                 roundCount++;
-                console.log(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);
+                head.textContent = `You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`;
                 break;
             case 'scissors':
                 playerWin++;
                 roundCount++;
-                console.log(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
+                head.textContent = `You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`;
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -44,16 +47,16 @@ function playRound(playerSelection, computerSelection) {
             case 'rock':
                 playerWin++;
                 roundCount++;
-                console.log(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
+                head.textContent = `You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`;
                 break;
             case 'paper':
                 roundCount++;
-                console.log(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
+                head.textContent = `It's a draw, you both picked ${playerSelection.toLowerCase()}!`;
                 break;
             case 'scissors':
                 computerWin++;
                 roundCount++;
-                console.log(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);                break;
+                head.textContent = `You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`;                break;
             default:
                 return "Uh oh.. something went wrong here.";
                 //Just in case something breaks with the computer play function..
@@ -63,15 +66,15 @@ function playRound(playerSelection, computerSelection) {
             case 'rock':
                 computerWin++;
                 roundCount++;
-                console.log(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);                break;
+                head.textContent = `You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`;                break;
             case 'paper':
                 playerWin++;
                 roundCount++;
-                console.log(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
+                head.textContent = `You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`;
                 break;
             case 'scissors':
                 roundCount++;
-                console.log(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
+                head.textContent = `It's a draw, you both picked ${playerSelection.toLowerCase()}!`;
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -82,15 +85,44 @@ function playRound(playerSelection, computerSelection) {
         
     }
 }
-
+const body = document.querySelector('body');
+const head = document.querySelector('h1');
 const buttons = document.querySelectorAll('button');
 const pScore = document.querySelector('#playerScore');
 const cScore = document.querySelector('#computerScore');
+const replayBtn = document.createElement('button');
+replayBtn.classList.add('replayBtn');
+replayBtn.textContent = 'Play Again?';
 
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-        playRound (button.id, computerPlay());
-        pScore.textContent = `Player: ${playerWin}`
-        cScore.textContent = `Computer: ${computerWin}` 
+        if (playerWin === 5 || computerWin === 5) {
+            console.log('*fart noises');
+        } else {
+            playRound (button.id, computerPlay());
+            pScore.textContent = `Player: ${playerWin}`;
+            cScore.textContent = `Computer: ${computerWin}`;
+            if (playerWin === 5) {
+                head.textContent = 'Congratulations! You\'ve won the game! You\'re an RPS master!';
+                buttons.forEach((button) => {
+                    button.classList.toggle('poof')
+                });
+                body.appendChild(replayBtn);
+            } else if (computerWin === 5) {
+                head.textContent = 'Oh no! You lost to the computer! Better luck next time!'
+                buttons.forEach((button) => {
+                    button.classList.toggle('poof')
+                });
+                body.appendChild(replayBtn);
+            }
+        }
     });
+});
+
+replayBtn.addEventListener('click', () => {
+    reset();
+    buttons.forEach((button) => {
+        button.classList.toggle('poof')
+    });
+    body.removeChild(replayBtn);
 });
