@@ -1,0 +1,30 @@
+* {
+    background-color: #4a4a4a;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    border: solid;
+    border-color: black;
+    height: 120px;
+    width: 120px;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.scorecard {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    gap: 16px;
+}

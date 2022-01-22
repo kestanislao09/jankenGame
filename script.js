@@ -16,51 +16,24 @@ function computerPlay() {
     return rpsChoices[Math.floor(Math.random() * rpsChoices.length)]
 }
 
-//Function to start the game
-function startDaGame() {
-    let gameStart = prompt('Would you like to start the game?');
-    if (gameStart.toLowerCase() === 'yes') {
-        alert('Cool, let\'s start the game! Good luck!');
-        reset();
-        game();
-    } else if (gameStart.toLowerCase() === 'no') {
-        alert('Oh... there isn\'t much else to do here..');
-        return startDaGame();
-    } else {
-        alert('Please only select "yes" or "no"...');
-        return startDaGame();
-    }
-}
-
-//Replay Function (edited startDaGame prettymuch..) Called at the end of each game function.
-function replayDaGame() {
-    let gameStart = prompt('Would you like to play another game?');
-    if (gameStart.toLowerCase() == 'yes') {
-        alert('Cool, let\'s start the game! Good Luck!');
-        reset();
-        game();
-    } else if (gameStart.toLowerCase() == 'no') {
-        alert('Oh... Welp there isn\'t much else to do here..');
-        return replayDaGame();
-    } else {
-        alert('Please only select "yes" or "no"...');
-        return replayDaGame();
-    }
-}
-
 //Single round of RPS
 //This could definitely use some optimization, but I'll add it in later.
-function rpsResult(playerSelection, computerSelection) {
+function playRound(playerSelection, computerSelection) {
     if (playerSelection === 'rock') {
         switch (computerSelection) {
             case 'rock':
-                return 'draw';
+                roundCount++;
+                console.log(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
                 break;
             case 'paper':
-                return 'lose';
+                computerWin++;
+                roundCount++;
+                console.log(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);
                 break;
             case 'scissors':
-                return 'win';
+                playerWin++;
+                roundCount++;
+                console.log(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -69,14 +42,18 @@ function rpsResult(playerSelection, computerSelection) {
     } else if (playerSelection === 'paper') {
         switch (computerSelection) {
             case 'rock':
-                return 'win';
+                playerWin++;
+                roundCount++;
+                console.log(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
                 break;
             case 'paper':
-                return 'draw';
+                roundCount++;
+                console.log(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
                 break;
             case 'scissors':
-                return 'lose';
-                break;
+                computerWin++;
+                roundCount++;
+                console.log(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);                break;
             default:
                 return "Uh oh.. something went wrong here.";
                 //Just in case something breaks with the computer play function..
@@ -84,13 +61,17 @@ function rpsResult(playerSelection, computerSelection) {
     } else if (playerSelection === 'scissors') {
         switch (computerSelection) {
             case 'rock':
-                return 'lose';
-                break;
+                computerWin++;
+                roundCount++;
+                console.log(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);                break;
             case 'paper':
-                return 'win';
+                playerWin++;
+                roundCount++;
+                console.log(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
                 break;
             case 'scissors':
-                return 'draw';
+                roundCount++;
+                console.log(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
                 break;
             default:
                 return "Uh oh.. something went wrong here.";
@@ -102,63 +83,14 @@ function rpsResult(playerSelection, computerSelection) {
     }
 }
 
-function playRound(playerSelection, computerSelection) {
-    let playerThrow = playerSelection
-    let computerThrow = computerSelection
-    let result = rpsResult(playerThrow.toLowerCase(), computerThrow.toLowerCase());
-    switch(result) { //Switch to simultaneously update score and print a dialogue
-        case 'win':
-            playerWin++;
-            roundCount++;
-            alert(`You win, ${playerSelection.toLowerCase()} beats ${computerSelection}!`);
-            break;
-        case 'lose':
-            computerWin++;
-            roundCount++;
-            alert(`You lose, ${computerSelection} beats ${playerSelection.toLowerCase()}!`);
-            break;
-        case 'draw':
-            roundCount++;
-            alert(`It's a draw, you both picked ${playerSelection.toLowerCase()}!`);
-            break;
-        default:
-            alert('You gotta pick rock, paper, or scissors...');
-            return playRound(prompt(`Round ${roundCount.toString()}: Please pick rock, paper, or scissors.`), computerPlay());
-    }
-}
+const buttons = document.querySelectorAll('button');
+const pScore = document.querySelector('#playerScore');
+const cScore = document.querySelector('#computerScore');
 
-//5 round game of RPS. Maybe future update to adjust game rounds.
-function game() {
-    
-    for (i=1;i<=5;i++) { //Loops through rounds until 5 have been played.
-        playRound(prompt(`Round ${roundCount.toString()}: Please pick rock, paper, or scissors.`), computerPlay());
-        
-        //Prints the updated score after the result is calculated
-        alert(`The score is now: ${playerWin.toString()} to ${computerWin.toString()}!`);
-    }
-        
-        
-    //End of the game, prints a win/lose/draw dialogue + the final scores.
-    if (playerWin > computerWin) {
-        alert('Congratulations on winning! You are an RPS master!');
-        alert(`Final Score: Player:${playerWin.toString()} RPSBot:${computerWin.toString()}`);
-        replayDaGame();
-    } else if (playerWin < computerWin) {
-        alert('You\'ve lost! Better luck next time!');
-        alert(`Final Score: Player:${playerWin.toString()} RPSBot:${computerWin.toString()}`);
-        replayDaGame();
-    } else if (playerWin === computerWin) {
-        alert('What a close game! It\'s a draw!');
-        alert(`Final Score: Player:${playerWin.toString()} RPSBot:${computerWin.toString()}`);
-        replayDaGame();
-    } else {
-        alert('Ah crap, Something went wrong!'); //another just in case
-    }
-}
-//Instructions will be obsolete once I put in a GUI
-alert('Welcome to my RPS game! Hit OK to continue :D');
-
-
-//Starts the game, only called once.
-startDaGame();
-
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        playRound (button.id, computerPlay());
+        pScore.textContent = `Player: ${playerWin}`
+        cScore.textContent = `Computer: ${computerWin}` 
+    });
+});
